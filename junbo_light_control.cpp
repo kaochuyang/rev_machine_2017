@@ -546,32 +546,32 @@ void junbo_light_control::junbo_light_send_reference_step(unsigned short int jun
         if((default_dir_mark!=0)&&((junbo_step==0)||(junbo_step==1)||(junbo_step==11)))
         {
             switch (default_dir_mark)
-         {
+            {
 
             case (1):
-            light_ID[1]=light_ID[6]=light_ID[8]=red;
-            light_ID[2]=light_ID[5]=light_ID[7]=green;
-            light_ID[3]=green;
-            light_ID[4]=red;
-            break;
-        case (2):
-            light_ID[1]=light_ID[6]=light_ID[8]=red;
-            light_ID[2]=light_ID[5]=light_ID[7]=green;
-            light_ID[3]=red;
-            light_ID[4]=green;
+                light_ID[1]=light_ID[6]=light_ID[8]=red;
+                light_ID[2]=light_ID[5]=light_ID[7]=green;
+                light_ID[3]=green;
+                light_ID[4]=red;
+                break;
+            case (2):
+                light_ID[1]=light_ID[6]=light_ID[8]=red;
+                light_ID[2]=light_ID[5]=light_ID[7]=green;
+                light_ID[3]=red;
+                light_ID[4]=green;
 
-            break;
-        case (3):
-            light_ID[1]=light_ID[6]=light_ID[8]=red;
-            light_ID[2]=light_ID[5]=light_ID[7]=green;
-            light_ID[3]=red;
-            light_ID[4]=red;
-            break;
-        default:
-            for(int i=0; i<8; i++)
-                light_ID[i]=light_off;
-            break;
-        }
+                break;
+            case (3):
+                light_ID[1]=light_ID[6]=light_ID[8]=red;
+                light_ID[2]=light_ID[5]=light_ID[7]=green;
+                light_ID[3]=red;
+                light_ID[4]=red;
+                break;
+            default:
+                for(int i=0; i<8; i++)
+                    light_ID[i]=light_off;
+                break;
+            }
         }
         else ;
 
@@ -1034,4 +1034,27 @@ void junbo_light_control::report_module_state_to_revapp()
     }
     writeJob.WritePhysicalOut(data, 26, revAPP);
     pthread_mutex_unlock(&junbo_light_control::_junbo_mutex);
+}
+
+void junbo_light_control::delete_record_before_3day()
+{
+    struct tm* currenttime;
+    time_t now = time(NULL);
+    localtime(&now);
+    now=now-259200;
+    currenttime = localtime(&now);
+    char buf[256];
+    buf[255] = '\0';
+    char dateTemp[32]= {0};
+    sprintf(dateTemp, "%#04d%#02d%#02d*", currenttime->tm_year+1900, currenttime->tm_mon+1, currenttime->tm_mday);
+    if (snprintf(buf, 255, "rm /cct/Data/junborecord/%s",dateTemp ) != -1)
+    {
+
+        printf("%s",buf);
+        system(buf);
+    }
+
+
+
+
 }

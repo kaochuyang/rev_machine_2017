@@ -41,6 +41,7 @@ public:
     void report_light_brightness();
     void report_light_timeout();
     void report_module_state_to_revapp();
+    void delete_record_before_3day();
 
     MESSAGEOK revAPP_packet(int readSelectLength,BYTE block[1024]);
 

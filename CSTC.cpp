@@ -1338,29 +1338,29 @@ void * CSTC::_stc_thread_light_control_func( void * )
             case( SIGNAL_NEXT_STEP ):
 //==        printf( "THREAD_LIGHT_CONTROL: getting signal from main to next step.\n" );
                 /******** lock mutex ********/
-/*
-                uc5F10_ControlStrategy.DBit = smem.vGetUCData(TC92_ucControlStrategy);
+                /*
+                                uc5F10_ControlStrategy.DBit = smem.vGetUCData(TC92_ucControlStrategy);
 
-                pthread_mutex_lock(&CSTC::_stc_mutex);
-                if(_current_strategy==STRATEGY_MANUAL || _current_strategy==STRATEGY_ALLDYNAMIC
-                        || uc5F10_ControlStrategy.DBit == 0x30)   //OT1000218
-                {
+                                pthread_mutex_lock(&CSTC::_stc_mutex);
+                                if(_current_strategy==STRATEGY_MANUAL || _current_strategy==STRATEGY_ALLDYNAMIC
+                                        || uc5F10_ControlStrategy.DBit == 0x30)   //OT1000218
+                                {
 
-                    if(clock_gettime(CLOCK_REALTIME, &strategy_start_time)<0) perror("Can not get strategy start time");
-                    ReSetStep(true);
-                    ReSetExtendTimer();
-                    SetLightAfterExtendTimerReSet();
+                                    if(clock_gettime(CLOCK_REALTIME, &strategy_start_time)<0) perror("Can not get strategy start time");
+                                    ReSetStep(true);
+                                    ReSetExtendTimer();
+                                    SetLightAfterExtendTimerReSet();
 
-                    if(_current_strategy==STRATEGY_ALLDYNAMIC)
-                    {
-                        stc.vReportGoToNextPhaseStep_5F0C();
-                    }
-                }
-                /******** unlock mutex ********/
-              /*  pthread_mutex_unlock(&CSTC::_stc_mutex);
+                                    if(_current_strategy==STRATEGY_ALLDYNAMIC)
+                                    {
+                                        stc.vReportGoToNextPhaseStep_5F0C();
+                                    }
+                                }
+                                /******** unlock mutex ********/
+                /*  pthread_mutex_unlock(&CSTC::_stc_mutex);
 
-                //OT Debug Signal 951116
-                smem.vSetBOOLData(TC_SIGNAL_NEXT_STEP_OK, true);*/
+                  //OT Debug Signal 951116
+                  smem.vSetBOOLData(TC_SIGNAL_NEXT_STEP_OK, true);*/
                 break;
 
             case( SIGNAL_TIMER ):
@@ -1371,19 +1371,19 @@ void * CSTC::_stc_thread_light_control_func( void * )
                 case( 1000 ):  //_timer_plan
 //==            printf( "TIMER: PLAN\n" );
                     /******** lock mutex ********/
-                 /*   pthread_mutex_lock(&CSTC::_stc_mutex);
-                    if(_current_strategy==STRATEGY_TOD||_current_strategy==STRATEGY_AUTO_CADC||_current_strategy==STRATEGY_CADC)
-                    {
-                        ReSetStep(true);
-                        ReSetExtendTimer();
-                        SetLightAfterExtendTimerReSet();
-                        if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true)
-                        {
-                            vCheckPhaseForTFDActuateExtendTime_5FCF();
-                        }
-                    }
-                    /******** unlock mutex ********/
-                 /*   pthread_mutex_unlock(&CSTC::_stc_mutex);*/
+                    /*   pthread_mutex_lock(&CSTC::_stc_mutex);
+                       if(_current_strategy==STRATEGY_TOD||_current_strategy==STRATEGY_AUTO_CADC||_current_strategy==STRATEGY_CADC)
+                       {
+                           ReSetStep(true);
+                           ReSetExtendTimer();
+                           SetLightAfterExtendTimerReSet();
+                           if(smem.vGetBOOLData(TC_CCTActuate_TOD_Running) == true)
+                           {
+                               vCheckPhaseForTFDActuateExtendTime_5FCF();
+                           }
+                       }
+                       /******** unlock mutex ********/
+                    /*   pthread_mutex_unlock(&CSTC::_stc_mutex);*/
                     break;
 
                 case( 1001 ):  //_timer_redcount
@@ -1392,30 +1392,30 @@ void * CSTC::_stc_thread_light_control_func( void * )
 //            _intervalTimer.vSendHeartBeatToLCX405();  //let 8051 alive.
 //MaskTest            stc.vSendHeartBeatToLCX405inCSTC();  //let 8051 alive.
 
-                /*    if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94 || smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94v2)
-                    {
-                        _MsgOK = oDataToMessageOK.vPackageINFOToVer94RedCount(0x83, usiRedCount[0], usiRedCount[1], usiRedCount[2], usiRedCount[3], usiRedCount[4]);
-                        _MsgOK.InnerOrOutWard = cOutWard;
-                        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVER94);
-
-                        ++usiRedCount[0];
-                        if(usiRedCount[0] >= 5)
+                    /*    if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94 || smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVer94v2)
                         {
-                            usiRedCount[0] = 0;
+                            _MsgOK = oDataToMessageOK.vPackageINFOToVer94RedCount(0x83, usiRedCount[0], usiRedCount[1], usiRedCount[2], usiRedCount[3], usiRedCount[4]);
+                            _MsgOK.InnerOrOutWard = cOutWard;
+                            writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVER94);
+
+                            ++usiRedCount[0];
+                            if(usiRedCount[0] >= 5)
+                            {
+                                usiRedCount[0] = 0;
+                            }
                         }
-                    }
-                    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerHK )
-                    {
-                        _MsgOK = oDataToMessageOK.vPackageINFOToVerHKRedCountComm();
-                        _MsgOK.InnerOrOutWard = cOutWard;
-                        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERHK);
-                    }
-                    else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerCCT97 )
-                    {
-                        _MsgOK = oDataToMessageOK.vPackageINFOTo92ProtocolSetADDR(ucEA00, 2, 0x36, 65535);      //brocasting
-                        _MsgOK.InnerOrOutWard = cOutWard;
-                        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERCCT97);
-                    }*/
+                        else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerHK )
+                        {
+                            _MsgOK = oDataToMessageOK.vPackageINFOToVerHKRedCountComm();
+                            _MsgOK.InnerOrOutWard = cOutWard;
+                            writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERHK);
+                        }
+                        else if( smem.vGetINTData(TC92_RedCountVer) == TC_RedCountVerCCT97 )
+                        {
+                            _MsgOK = oDataToMessageOK.vPackageINFOTo92ProtocolSetADDR(ucEA00, 2, 0x36, 65535);      //brocasting
+                            _MsgOK.InnerOrOutWard = cOutWard;
+                            writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICEREDCOUNTVERCCT97);
+                        }*/
 
                     break;
 
@@ -1441,6 +1441,9 @@ void * CSTC::_stc_thread_light_control_func( void * )
 //            ReportCurrentOperationMode();  //called by REPORT_TIMEOUT
 //            ReportCurrentHardwareStatus();  //called by REPORT_TIMEOUT
                     /*-----------------*/
+                    smem.o_Junbo_light.delete_record_before_3day();//delete record of junbolight log before 3 day for saving memory //2017 08 02
+
+
                     break;
 
                 case( 1004 ):
@@ -1451,7 +1454,7 @@ void * CSTC::_stc_thread_light_control_func( void * )
                         else
                             smem.o_Junbo_light.junbo_light_send_reference_step(_exec_reversetime_current_rev_step);//test
                     }
-                    else smem.o_Junbo_light.junbo_light_send_reference_step(_exec_reversetime_current_rev_step);
+                    //  else smem.o_Junbo_light.junbo_light_send_reference_step(_exec_reversetime_current_rev_step);
 
                     break;
 
@@ -1475,45 +1478,45 @@ void * CSTC::_stc_thread_light_control_func( void * )
                 break;
 
             case (SIGNAL_CONGESTED_threshold):
-         /*       printf("old threshold_E %d\n", traffic_analyzer.threshold_E);
-                pthread_mutex_lock(&CSTC::_stc_mutex);
-                traffic_analyzer.threshold_E_by_signal = light_control_siginfo.si_int;
-                traffic_analyzer.threshold_E = light_control_siginfo.si_int;
-                pthread_mutex_unlock(&CSTC::_stc_mutex);
-                printf("new threshold_E %d\n", traffic_analyzer.threshold_E);*/
+                /*       printf("old threshold_E %d\n", traffic_analyzer.threshold_E);
+                       pthread_mutex_lock(&CSTC::_stc_mutex);
+                       traffic_analyzer.threshold_E_by_signal = light_control_siginfo.si_int;
+                       traffic_analyzer.threshold_E = light_control_siginfo.si_int;
+                       pthread_mutex_unlock(&CSTC::_stc_mutex);
+                       printf("new threshold_E %d\n", traffic_analyzer.threshold_E);*/
                 /*+++++++++++++++++*/
 //        keypad.keypadPort.doChangeVInfoWork(6);
                 /*-----------------*/
                 break;
 
             case (SIGNAL_D_threshold):
-             /*   printf("old threshold_D %d\n", traffic_analyzer.threshold_D);
-                pthread_mutex_lock(&CSTC::_stc_mutex);
-                traffic_analyzer.threshold_D = light_control_siginfo.si_int;
-                pthread_mutex_unlock(&CSTC::_stc_mutex);
-                printf("new threshold_D %d\n", traffic_analyzer.threshold_D);*/
+                /*   printf("old threshold_D %d\n", traffic_analyzer.threshold_D);
+                   pthread_mutex_lock(&CSTC::_stc_mutex);
+                   traffic_analyzer.threshold_D = light_control_siginfo.si_int;
+                   pthread_mutex_unlock(&CSTC::_stc_mutex);
+                   printf("new threshold_D %d\n", traffic_analyzer.threshold_D);*/
                 /*+++++++++++++++++*/
 //                keypad.keypadPort.doChangeVInfoWork(6);
                 /*-----------------*/
                 break;
 
             case (SIGNAL_C_threshold):
-            /*    printf("old threshold_C %d\n", traffic_analyzer.threshold_C);
-                pthread_mutex_lock(&CSTC::_stc_mutex);
-                traffic_analyzer.threshold_C = light_control_siginfo.si_int;
-                pthread_mutex_unlock(&CSTC::_stc_mutex);
-                printf("new threshold_C %d\n", traffic_analyzer.threshold_C);*/
+                /*    printf("old threshold_C %d\n", traffic_analyzer.threshold_C);
+                    pthread_mutex_lock(&CSTC::_stc_mutex);
+                    traffic_analyzer.threshold_C = light_control_siginfo.si_int;
+                    pthread_mutex_unlock(&CSTC::_stc_mutex);
+                    printf("new threshold_C %d\n", traffic_analyzer.threshold_C);*/
                 /*+++++++++++++++++*/
 //                keypad.keypadPort.doChangeVInfoWork(6);
                 /*-----------------*/
                 break;
 
             case (SIGNAL_B_threshold):
-           /*     printf("old threshold_B %d\n", traffic_analyzer.threshold_B);
-                pthread_mutex_lock(&CSTC::_stc_mutex);
-                traffic_analyzer.threshold_B = light_control_siginfo.si_int;
-                pthread_mutex_unlock(&CSTC::_stc_mutex);
-                printf("new threshold_B %d\n", traffic_analyzer.threshold_B);*/
+                /*     printf("old threshold_B %d\n", traffic_analyzer.threshold_B);
+                     pthread_mutex_lock(&CSTC::_stc_mutex);
+                     traffic_analyzer.threshold_B = light_control_siginfo.si_int;
+                     pthread_mutex_unlock(&CSTC::_stc_mutex);
+                     printf("new threshold_B %d\n", traffic_analyzer.threshold_B);*/
                 /*+++++++++++++++++*/
 //                keypad.keypadPort.doChangeVInfoWork(6);
                 /*-----------------*/
@@ -1637,9 +1640,9 @@ void CSTC::TimersSetting(void)
         _itimer_panelcount.it_interval.tv_sec = LIGHT_TIMEOUT;
         _itimer_panelcount.it_interval.tv_nsec = 0;
         if ( timer_settime( _timer_panelcount, 0, & _itimer_panelcount, NULL ) ) exit( 1 );
-        _itimer_reportcount.it_value.tv_sec = REPORT_TIMEOUT;
+        _itimer_reportcount.it_value.tv_sec = 10;
         _itimer_reportcount.it_value.tv_nsec = 0;
-        _itimer_reportcount.it_interval.tv_sec = REPORT_TIMEOUT;
+        _itimer_reportcount.it_interval.tv_sec = 86400;
         _itimer_reportcount.it_interval.tv_nsec = 0;
         if ( timer_settime( _timer_reportcount, 0, & _itimer_reportcount, NULL ) ) exit( 1 );
         _itimer_record_traffic.it_value.tv_sec = 5;
@@ -2674,7 +2677,9 @@ bool CSTC::vDetermine_ReverseTime(void)
         {
             printf("_exec_reversetime_current_rev_step:%d -1\n", _exec_reversetime_current_rev_step);
             if(((iCurrentSec>=iRevInCitySec)&&(iCurrentSec<iRevInCityEndSec)) ||((iCurrentSec>=iRevOutCitySec)&&(iCurrentSec<iRevOutCityEndSec)))
-                stc.vReportRevStatus5F02(1);//revAPP
+            {
+                stc.vReportRevStatus5F02(1);
+            }//revAPP
 
             usiReverseLight = vStartReverseLaneInStep0(now, &iTmpSec);
             ReverseLight_log = usiReverseLight;     //jacky20140507
@@ -2686,7 +2691,8 @@ bool CSTC::vDetermine_ReverseTime(void)
             printf("_exec_reversetime_current_rev_step:%d -2\n", _exec_reversetime_current_rev_step);
 //    before_step=_exec_reversetime_current_rev_step;
             //usiReverseLight = vStartReverseLane(now, &iTmpSec);
-               usiReverseLight = vStartReverseLaneInStep0(now, &iTmpSec);
+            usiReverseLight = vStartReverseLaneInStep0(now, &iTmpSec);
+            if(_exec_reversetime_current_rev_step==8||_exec_reversetime_current_rev_step==18) stc.vReportRevStatus5F02(0);//revAPP
 
             ReverseLight_log = usiReverseLight;     //jacky20140507
             reverselosstmp = false;     //jacky20140507
@@ -3206,7 +3212,7 @@ unsigned short CSTC::vStartReverseLaneInStep0(time_t timeIn, int *iRetTmpSec)   
         {
             _exec_reversetime_current_rev_step = 11;
             *iRetTmpSec = iRevOutCitySec - iCurrentSec;
-            if((iRevOutCitySec - iCurrentSec)==0)stc.vReportRevStatus5F02(1);
+            //if((iRevOutCitySec - iCurrentSec)==0)stc.vReportRevStatus5F02(1);
 //Case 10
         }
         else if(iRevInCitySec < iRevInCityEndSec &&
@@ -3636,7 +3642,7 @@ unsigned short CSTC::vStartReverseLane(time_t timeIn, int *iRetTmpSec)   //èª¿æ’
             *iRetTmpSec = 1;
             usiLight1 = 0x0;                                                            // 00000000
             _exec_reversetime_current_rev_step = 0;
-            stc.vReportRevStatus5F02(0);  //send msg to center
+            //stc.vReportRevStatus5F02(0);  //send msg to center
         }
 
 //OT20121217, bug fix
@@ -3714,7 +3720,7 @@ unsigned short CSTC::vStartReverseLane(time_t timeIn, int *iRetTmpSec)   //èª¿æ’
             *iRetTmpSec = 1;
             usiLight2 = 0x0;
             _exec_reversetime_current_rev_step = 0;
-            stc.vReportRevStatus5F02(0);  //send msg to center
+            //stc.vReportRevStatus5F02(0);  //send msg to center
         }
         else      //Find Bug.
         {
@@ -8100,7 +8106,7 @@ bool CSTC::TimersRead_BeforeResetCMOSTime(void)
         timer_settime(_timer_plan, 0, &_itZero, NULL);
         timer_settime(_timer_reversetime, 0, &_itZero, NULL);
         timer_settime(_timer_panelcount, 0, &_itZero, NULL);
-        timer_settime(_timer_reportcount, 0, &_itZero, NULL);
+      //  timer_settime(_timer_reportcount, 0, &_itZero, NULL);
         timer_settime(_timer_record_traffic, 0, &_itZero, NULL);
         timer_settime(_timer_redcount, 0, &_itZero, NULL);
 
@@ -10953,9 +10959,7 @@ void CSTC::vReportBF02CCTProtocalSendKaikinStep(void)
 
         //5F80 don't resend
 //  writeJob.WritePhysicalOutNoSetSeqNoResend(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
-        /**/
 
-        /**/
 
     }
     catch (...) {}
