@@ -1454,7 +1454,7 @@ void * CSTC::_stc_thread_light_control_func( void * )
                         else
                             smem.o_Junbo_light.junbo_light_send_reference_step(_exec_reversetime_current_rev_step);//test
                     }
-                    //  else smem.o_Junbo_light.junbo_light_send_reference_step(_exec_reversetime_current_rev_step);
+                      else smem.o_Junbo_light.junbo_light_send_reference_step(_exec_reversetime_current_rev_step);
 
                     break;
 
@@ -1543,7 +1543,7 @@ void * CSTC::_stc_thread_light_control_func( void * )
                     timer_settime( _timer_plan_WDT, 0, &_itimer_plan_WDT, NULL );
                     timer_settime( _timer_redcount, 0, & _itimer_redcount, NULL );
 
-                    smem.vWriteMsgToDOM("Plan WDT Start, what's happened?");
+//                    smem.vWriteMsgToDOM("Plan WDT Start, what's happened?");
 
 //==            printf( "TIMER: PLAN\n" );
 
@@ -2509,7 +2509,7 @@ bool CSTC::vDetermine_ReverseTime(void)
         unsigned char ucTmp;
         unsigned char ucTmpArray[2];
         unsigned short int  for_junbo_step=0,before_step=0;
-
+        char cTMP2[256];
         now = time(NULL);
         currenttime = localtime(&now);
 
@@ -2682,6 +2682,9 @@ bool CSTC::vDetermine_ReverseTime(void)
             }//revAPP
 
             usiReverseLight = vStartReverseLaneInStep0(now, &iTmpSec);
+            sprintf(cTMP2, "revStep:%d, revSec:%d",  _exec_reversetime_current_rev_step, iTmpSec);
+            smem.vWriteMsgToDOM(cTMP2);
+
             ReverseLight_log = usiReverseLight;     //jacky20140507
             reverselosstmp = false;     //jacky20140507
             //----------------------------------------------------------
@@ -2692,7 +2695,11 @@ bool CSTC::vDetermine_ReverseTime(void)
 //    before_step=_exec_reversetime_current_rev_step;
             //usiReverseLight = vStartReverseLane(now, &iTmpSec);
             usiReverseLight = vStartReverseLaneInStep0(now, &iTmpSec);
+            if(_exec_reversetime_current_rev_step==2||_exec_reversetime_current_rev_step==12) stc.vReportRevStatus5F02(1);//revAPP
             if(_exec_reversetime_current_rev_step==8||_exec_reversetime_current_rev_step==18) stc.vReportRevStatus5F02(0);//revAPP
+            usiReverseLight = vStartReverseLaneInStep0(now, &iTmpSec);
+            sprintf(cTMP2, "revStep:%d, revSec:%d",  _exec_reversetime_current_rev_step, iTmpSec);
+            smem.vWriteMsgToDOM(cTMP2);
 
             ReverseLight_log = usiReverseLight;     //jacky20140507
             reverselosstmp = false;     //jacky20140507

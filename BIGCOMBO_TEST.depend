@@ -11379,7 +11379,30 @@
 	"screenSegtypePreview.h"
 	"SMEM.h"
 
-1501662177 source:/home/cct/Desktop/Untitled4/STCBIGCombo_ICOP_NEW_LCD_20170317_start_from_0x4000/git-repos/rev_machine_2017/junbo_light_control.cpp
+1501751035 source:/home/cct/Desktop/Untitled4/STCBIGCombo_ICOP_NEW_LCD_20170317_start_from_0x4000/git-repos/rev_machine_2017/junbo_light_control.cpp
 	"junbo_light_control.h"
 	"SMEM.h"
+
+1501738856 source:/home/cct/Desktop/Untitled4/STCBIGCombo_ICOP_NEW_LCD_20170317_start_from_0x4000/git-repos/rev_machine_2017/CSTC.cpp
+	"CSTC.h"
+	"light.h"
+	"CTools.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<pthread.h>
+	<signal.h>
+	<time.h>
+	<mntent.h>
+	<sstream>
+	<iomanip>
+	"screenCurrentLightStatus.h"
+	"screenStrategy.h"
+	"CTIMER.h"
+	"SCREENHWReset.h"
+	"screenRedCountHWCheckSel.h"
 

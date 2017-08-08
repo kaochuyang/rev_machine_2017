@@ -193,7 +193,7 @@ void junbo_light_control::junbol_light_5F7C()
     unsigned char num_light=0;
     int countID[8];
 
-    for(int query_count=0; query_count<2; query_count++)
+    for(int query_count=1/*0*/; query_count<2; query_count++)
     {
 
         memset(countID,0,sizeof(int));
@@ -245,7 +245,7 @@ void junbo_light_control::junbol_light_5F7B()
     unsigned char num_light=0;
     int countID[8];
 
-    for(int query_count=0; query_count<2; query_count++)
+    for(int query_count=1/*0*/; query_count<2; query_count++)
     {
 
         memset(countID,0,sizeof(int));
@@ -1038,6 +1038,10 @@ void junbo_light_control::report_module_state_to_revapp()
 
 void junbo_light_control::delete_record_before_3day()
 {
+    try
+    {
+
+
     struct tm* currenttime;
     time_t now = time(NULL);
     localtime(&now);
@@ -1053,7 +1057,8 @@ void junbo_light_control::delete_record_before_3day()
         printf("%s",buf);
         system(buf);
     }
-
+    }
+    catch(...){}
 
 
 
