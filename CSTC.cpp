@@ -2679,6 +2679,9 @@ bool CSTC::vDetermine_ReverseTime(void)
             if(((iCurrentSec>=iRevInCitySec)&&(iCurrentSec<iRevInCityEndSec)) ||((iCurrentSec>=iRevOutCitySec)&&(iCurrentSec<iRevOutCityEndSec)))
             {
                 stc.vReportRevStatus5F02(1);
+                sprintf(cTMP2, "vReportRevStatus5F02(1)_step=0\n");
+                smem.vWriteMsgToDOM(cTMP2);
+
             }//revAPP
 
             usiReverseLight = vStartReverseLaneInStep0(now, &iTmpSec);
@@ -2707,13 +2710,7 @@ bool CSTC::vDetermine_ReverseTime(void)
 //    signal_bit_map[13] = ( usiReverseLight >> 8) & 0xFF;
         }
 
-//-------------Error Prototec
-        /*  if(_exec_reversetime_current_rev_step == 3 ||
-                  _exec_reversetime_current_rev_step == 13  ) {
-            usiReverseLight = 0x0033; //All X
-            printf("_exec_reversetime_current_rev_step:%d -3\n", _exec_reversetime_current_rev_step);
-          }
-        */
+
         printf("_exec_reversetime_current_rev_step:%d -31\n", _exec_reversetime_current_rev_step);
 
         ucTmpArray[0] = smem.vGetUCData(200+12);
