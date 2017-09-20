@@ -324,11 +324,11 @@ void junbo_light_control::junbo_light_send_reference_step(unsigned short int jun
             light_ID[1]=light_ID[6]=light_ID[8]=red;
             light_ID[2]=light_ID[5]=light_ID[7]=green;
             light_ID[3]=red;
-            light_ID[4]=green;
+            light_ID[4]=light_off;
             break;
 
         case(3):
-            ucSendTMP[0] = 0xAA;//head
+        /*    ucSendTMP[0] = 0xAA;//head
             ucSendTMP[1] = 0x0;//sequence
             ucSendTMP[2] = 4;//ID
             ucSendTMP[3] = green.command;
@@ -337,11 +337,11 @@ void junbo_light_control::junbo_light_send_reference_step(unsigned short int jun
             for (int a=0; a<5; a++)
                 ucSendTMP[5]^=ucSendTMP[a];
             junbo_light_send(ucSendTMP);
-            printf("green_right\n");
+            printf("green_right\n");*/
             light_ID[1]=light_ID[6]=light_ID[8]=red;
             light_ID[2]=light_ID[5]=light_ID[7]=green;
             light_ID[3]=red;
-            light_ID[4]=flash_on;
+            light_ID[4]=light_off;
 
             break;
         case(4):
@@ -418,7 +418,7 @@ void junbo_light_control::junbo_light_send_reference_step(unsigned short int jun
             light_ID[1]=light_ID[6]=light_ID[8]=red;
             light_ID[2]=light_ID[5]=light_ID[7]=green;
             light_ID[3]=red;
-            light_ID[4]=green;
+            light_ID[4]=light_off;
 
             break;
 
